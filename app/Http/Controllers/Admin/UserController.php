@@ -34,7 +34,8 @@ class UserController extends Controller
                     ->withInput();
             }
 
-            $data['password']=Crypt::encrypt($request->get('password'));
+//            $data['password']=Crypt::encrypt($request->get('password'));
+            $data['password']=password_hash($request->get('password'),PASSWORD_BCRYPT);
             $res = AdminUser::create($data);
             if($res){
                 return redirect('admin/user/lists')->with('msg','添加成功');

@@ -62,6 +62,7 @@ class Controller extends BaseController
         $output = [
             'error' => $error,
             'msg'   => $msg,
+            
         ];
         if (!is_null($data)) {
             $output['data'] = $data;

@@ -1,48 +1,127 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+@extends('layouts.layouts')
+@section('title')
     <title>vue</title>
-{{--    <script src="{{myAssetMix('js/manifest.js')}}"></script>--}}
+@endsection
+@section('websocket')
         <script src="{{asset('js/vue/vue.min.js')}}"></script>
         <script src="{{asset('js/axios/axios.min.js')}}"></script>
         {{--使用cdn--}}
         {{--<script src="https://unpkg.com/axios/dist/axios.min.js"></script>--}}
     {{--<script src="https://cdn.bootcss.com/vue/2.4.2/vue.min.js"></script>--}}
-</head>
-<body>
+@endsection
+
+{{--长链接测试--}}
+    {{--<script type="text/javascript">--}}
+        {{--var exampleSocket = new WebSocket("ws://qymblog.com:9555");--}}
+
+{{--//            if (exampleSocket.readyState===1) {--}}
+{{--//                exampleSocket.send("长链接，我来啦！！！");--}}
+{{--//            }else{--}}
+{{--//                console.log('正在链接中。。。。。。');--}}
+{{--//            }--}}
+        {{--exampleSocket.onopen = function (event) {--}}
+            {{--exampleSocket.send("长链接已经建立！");--}}
+        {{--};--}}
+
+        {{--exampleSocket.onmessage = function (event) {--}}
+            {{--console.log(event.data);--}}
+        {{--}--}}
+    {{--</script>--}}
+@section('body')
+    <form method="post" action="/job/swoole">
+        {{csrf_field()}}
+        <input  type="text" id="content" name="message">
+        <button>发送</button>
+        {{--<button  onclick="exampleSocket.send( document.getElementById('content').value )">发送</button>--}}
+    </form>
+
 
 <div id="axios">
     <button @click="Axioss" id="butt">axios异步ajax</button>
+    <p v-if="seen">@{{name}}</p>
 </div>
 
 <script>
-    new Vue({
+     new Vue({
     el:"#axios",
-        data:{},
+    data:{
+        name:'哈哈',
+        seen:false,
+        },
         methods:{
             Axioss:function () {
-                axios.get('user/axios', {
-{{--                axios.get({{asset('/user/axios')}}, {--}}
-                    params: {
-                        phone:15210643471,
-                        name:'dream',
-                    }
+                //存储变量的重要性，axios成功返回执行的函数中this为window对象
+                vm = this;
+                var instance = axios.create({
+                    baseURL: 'http://qymblog.com/'
+                });
+                //创建实例进行配置请求和响应
+                instance.defaults.headers.common['Authorization'] = 'AUTH_TOKEN';
+                instance.defaults.timeout = 2500;
+                // 为已知需要花费很长时间的请求覆写超时设置
+                instance.post('user/axios', {
+                    timeout: 5000
+                });
+                //请求配置,只有 url 是必需的
+                axios({
+                    method: 'post',
+                    url: 'user/axios',
+                    data: {
+                        firstName: 'Fred',
+                        lastName: 'Flintstone'
+                    },
+                    transformRequest: [function (data) {
+                        // 对 data 进行任意转换处理
+
+                        return data;
+                    }],
+                    transformResponse: [function (data) {
+                        // 对 data 进行任意转换处理
+
+                        return data;
+                    }],
+                    headers: {'X-Requested-With': 'XMLHttpRequest'},
+                    paramsSerializer: function(params) {
+                        return Qs.stringify(params, {arrayFormat: 'brackets'})
+                    },
+                    timeout: 1000
+
+
                 })
-                    .then(function (response) {
+                axios.post('user/axios', {
+                //                axios.get('/user/axios', {
+                                    params: {
+                                        phone:15210643471,
+                                        name:'dream',
+                                    }
+                                })
+
+                        .then(function (response) {
+                        console.log(vm);
                         console.log(response);
+                        console.log(vm.name);
+                        vm.name=response.data.data.params.name;  //post
+//                        vm.name=response.data.data.name;  //get
+                        console.log(vm.seen);
+                        vm.seen = true;
+                        console.log(vm.name);
+                        console.log(vm.seen);
                     })
                     .catch(function (error) {
                         console.log(error);
+                        console.log(error.message);
+                        console.log(error.code); // Not always specified
+                        console.log(error.config); // The config that was used to make the request
+                        console.log(error.response); // Only available if response was received from the server
                     });
 
+
+//                })
             }
         }
     })
 </script>
+{{--===================================================================================--}}
 <div id="vue_det">
     <h1>site:@{{  site }}</h1>
     <h1>url:@{{  url }}</h1>
@@ -145,4 +224,4 @@
 //        }
     })
 </script>
-</html>
+@endsection

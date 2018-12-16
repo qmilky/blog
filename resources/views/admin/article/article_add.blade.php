@@ -57,7 +57,7 @@
                         <select name="cate_id">
                             <option value="">==请选择==</option>
                             @foreach($cates as $k=>$v)
-                                <option value="{{$v->cate_id}}">{{$v->cate_names}}</option>
+                                <option value="{{$v->id}}">{{$v->cate_names}}</option>
                             @endforeach
 
                         </select>
@@ -69,6 +69,13 @@
                     <td>
                         <input type="text" class="lg" name="art_title">
                         <p>标题可以写30个字</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th><i class="require">*</i>相关链接：</th>
+                    <td>
+                        <input type="text" class="lg" name="art_link">
+                        <p>链接与描述之间用@@隔开，链接之间用；隔开</p>
                     </td>
                 </tr>
                 <tr>
@@ -123,7 +130,7 @@
                                             $('#img1').attr('src','http://p0bvp893u.bkt.clouddn.com/uploads/'+data);
 //                                            $('#img1').attr('src','http://project193.oss-cn-beijing.aliyuncs.com/'+data);
                                         $('#img1').show();
-                                        $('#art_thumb').val('/uploads/'+data);
+                                        $('#art_thumb').val('http://p0bvp893u.bkt.clouddn.com/uploads/'+data);
                                     },
                                     error: function(XMLHttpRequest, textStatus, errorThrown) {
                                         alert("上传失败，请检查网络后重试");

@@ -66,6 +66,7 @@ class CateArticleController extends Controller
     public function catesIndex()
     {
         $cates = CateArticle::tree();
+//        dd($cates);
         return  view ('admin.article.cate_index',compact('cates'));
     }
     public  function  delCate($id,CateArticle $articleCate)
@@ -90,4 +91,47 @@ class CateArticleController extends Controller
        }
             return $data;
     }
+
+
+    public  function changeOrder(Request $request)
+    {
+        $id = $request->get('cate_id');
+        $data['cate_order'] = $request->get('cate_order');
+        $res = CateArticle::where('id',$id)->update($data);
+        Log::info('分类排序修改结果',[$res]);
+        if($res){
+            $datas = [
+                'msg'=>'排序修改成功',
+                'status'=>0,
+            ];
+                return json_encode($datas);
+        }
+        $datas = [
+            'msg'=>'排序修改失败',
+            'status'=>1,
+        ];
+        return response()->json($datas);
+    }
+    //分类修改,不支持修改所属父分类
+    public function cateEdit($id,Request $request,CateArticle $cateArticle)
+    {
+        if($request->method()=='POST'){
+            $data['cate_name']       =$request->get('cate_name');
+            $data['cate_title']      =$request->get('cate_title');
+            $data['cate_keywords']   =$request->get('cate_keywords');
+            $data['cate_description']=$request->get('cate_description');
+            $data['cate_order']      =$request->get('cate_order');
+            $res = $cateArticle->where('id',$id)->update($data);
+            if($res){
+                return redirect('admin/article/cates/index')->with(['msg'=>'分类修改成功']);
+            }
+            return back()->withInput()->with(['msg'=>'分类修改失败']);
+        }
+        $cate = $cateArticle->find($id);
+        return view('admin/article/cate_edit',compact('cate'));
+    }
+
+
+
+
 }

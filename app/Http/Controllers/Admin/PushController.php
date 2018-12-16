@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Response;
 use JPush\Client;
+use Getui;
 class PushController extends Controller
 {
     public function push(Request $request,Response $response)
@@ -121,4 +122,29 @@ class PushController extends Controller
 
 
     }
+
+
+    //测试个推
+
+    public  function geTui()
+    {
+
+        $cid = '2e682657977c5c616481ae76088b033d'; //你数据库中存储的cid即clientId？？？没有;
+        $data = ['name'=>'echobool','content'=>'你好啊！','title'=>'这是一个标题','text'=>'texts','body'=>'这是内容','payload'=>'payload'];
+        $template_id = 1; //是发送模板
+        $res =  Getui::pushMessageToSingle($cid,$data,$template_id);
+        dd($res);
+
+        //下面这个是只针对 IOS的推送 自己选择使用
+//        $data = ['content'=>'content','body'=>'这是内容','title'=>'这是一个标题','text'=>'texts'];
+//        Getui::pushAPNL($DeviceToken,$data);
+    }
+
+
+
+
+
+
+
+
 }

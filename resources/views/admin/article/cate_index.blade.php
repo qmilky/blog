@@ -49,16 +49,16 @@
                     @foreach($cates as $k=>$v)
                         <tr>
                             <td class="tc">
-                                <input type="text" onchange="changeOrder(this,{{$v->cate_id}})" value="{{$v->cate_order}}">
+                                <input type="text" onchange="changeOrder(this,{{$v->id}})" value="{{$v->cate_order}}">
                             </td>
-                            <td class="tc">{{$v->cate_id}}</td>
+                            <td class="tc">{{$v->id}}</td>
                             <td>
                                 <a href="#">{{$v->cate_names}}</a>
                             </td>
                             <td>{{$v->cate_title}}</td>
                             <td>{{$v->cate_view}}</td>
                             <td>
-                                <a href="#">修改</a>
+                                <a href="{{url('admin/article/cate/edit').'/'.$v->id}}">修改</a>
                                 <a href="javascript:;" onclick="delCate({{$v->cate_id}})">删除</a>
                             </td>
                         </tr>
@@ -80,16 +80,17 @@
             //获取当前需要排序的记录的ID,cate_id
             //获取当前记录的排序文本框中的值
             var cate_order = $(obj).val();
-            $.post("{{url('admin/cate/changeorder')}}",{'_token':"{{csrf_token()}}","cate_id":cate_id,"cate_order":cate_order},function(data){
+            $.post("{{url('admin/article/cate/changeorder')}}",{'_token':"{{csrf_token()}}","cate_id":cate_id,"cate_order":cate_order},function(data){
+               //将json格式的字符串装换为json对象，否则无法使用对象调用符 . ,jquery中；
+                data = $.parseJSON(data);
                 //如果排序成功，提示排序成功
                 if(data.status == 0){
-
                     layer.msg(data.msg,{icon: 6});
-                    location.href = location.href;
+//                    location.href = location.href;
                 }else{
                     //如果排序失败，提示排序失败
                     layer.msg(data.msg,{icon: 5});
-                    location.href = location.href;
+//                    location.href = location.href;
                 }
             })
 

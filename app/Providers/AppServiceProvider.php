@@ -3,7 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-
+use App\Services\Vendor\Sequence;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -26,6 +26,9 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->singleton('ArticleCateService', function ($app) {
             return new ArticleCateService($app);
+        });
+        $this->app->singleton('sequence', function ($app) {
+            return new Sequence(1);
         });
 
     }

@@ -45,6 +45,8 @@ class LoginController extends Controller
     }
     public  function login(Request $request)
     {
+//        $route = \Route::current()->getActionName();
+//        dd($route);
         /*此处Request不是门面类，而是use Illuminate\Http\Request;*/
         if($request->method()=="POST"){
            $data = $request->except('_token');

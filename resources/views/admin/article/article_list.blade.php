@@ -18,15 +18,15 @@
     <!--结果页快捷搜索框 结束-->
 
     <!--搜索结果页面 列表 开始-->
-    <form action="#" method="post">
+
         <div class="result_wrap">
             <!--快捷导航 开始-->
-            <div class="result_content">
+            <div class="result_content" id="msg">
                 <div class="short_wrap">
                     <div class="alert alert-danger">
                         <ul>
                             @if(session('msg'))
-                                <li style="color:red">{{session('msg')}}</li>
+                                <li style="color:red" >{{session('msg')}}</li>
                             @endif
                         </ul>
                     </div>
@@ -36,6 +36,22 @@
         </div>
 
         <div class="result_wrap">
+            <form action="{{url('/admin/article/research')}}"  method="get">
+                <input name="art_title" value="{{$request->art_title}}" placeholder="请输入文章标题" type="text">
+                <select name="cate_id">
+                    <option value="">
+                        请选择文章分类
+                    </option>
+                    @foreach($cates as $k=> $cate)
+                    <option value="{{$cate->id}}"
+                    @if($cate->id==$request->cate_id) selected @endif
+                    >
+                        {{$cate->cate_names}}
+                    </option>
+                        @endforeach
+                </select>
+                <button type="submit">提交</button>
+            </form>
             <div class="result_content">
                 <table class="list_tab">
                     <tr>
@@ -45,22 +61,38 @@
                         <th>编辑</th>
                         <th>发布时间</th>
                         <th>文章分类</th>
+                        <th>文章状态</th>
                         <th>操作</th>
                     </tr>
                     @foreach($arts as $k=>$v)
                         <tr>
-                            <td class="tc">{{$v->art_id}}</td>
+                            <td class="tc">{{$v['id']}}</td>
                             <td>
-                                <a href="#">{{$v->art_title}}</a>
+                                <a href="#">{{$v['art_title']}}</a>
                             </td>
-                            <td>{{$v->art_view}}</td>
-                            <td>{{$v->art_editor}}</td>
-                            <td>{{date('Y-m-d H:i:s',$v->art_time)}}</td>
-                            <td>{{$v->cates->cate_name}}</td>
+                            <td>{{$v['art_view']}}</td>
+                            <td>{{$v['art_editor']}}</td>
+                            <td>{{$v['art_time']}}</td>
+                            <td>{{$v['cate_name']}}</td>
+                            <td>{{$v['status_txt']}}</td>
+                            {{--<td>--}}
+                                {{--@foreach($v->art_links as $m=>$n)--}}
+                                    {{--<a href="{{$n['url']}}">{{$n['name']}};</a>--}}
+                                    {{--@endforeach--}}
+                            {{--</td>--}}
                             <td>
                                 {{--admin/article/{article}/edit--}}
-                                <a href="{{url('admin/article/'.$v->art_id.'/edit')}}">修改</a>
-                                <a href="javascript:;" onclick="delArt({{$v->art_id}})">删除</a>
+                                <a href="{{url('admin/article/'.$v['id'].'/edit')}}">修改</a>
+
+                                <a href ="{{url('admin/article/status?status='.$v['status'].'&art_id='.$v['id'])}}">
+                                    @if($v['status']==1)
+                                        禁用
+                                        @elseif($v['status']==0)
+                                        启用
+                                        @endif
+                                </a>
+                                <a href="javascript:;" onclick="delArt({{$v['id']}})">删除</a>
+
                             </td>
                         </tr>
                     @endforeach
@@ -90,7 +122,7 @@
                 <div class="page_list">
 
                     {{--appends(['keyword1'=>'a','keyword2'=>'aaa@q163.com','num'=>2])--}}
-                    {!! $arts->render() !!}
+{{--                    {!! $arts->render() !!}--}}
                 </div>
 
                 <style>
@@ -100,13 +132,12 @@
                 </style>
             </div>
         </div>
-    </form>
+
     <!--搜索结果页面 列表 结束-->
 
     <script>
 
-        function userDel(id) {
-
+        function delArt(id) {
             //询问框
             layer.confirm('您确认删除吗？', {
                 btn: ['确认','取消'] //按钮
@@ -114,7 +145,8 @@
 //                如果用户发出删除请求，应该使用ajax向服务器发送删除请求
 //                $.get("请求服务器的路径","携带的参数", 获取执行成功后的额返回数据);
                 //admin/user/1
-                $.post("{{url('admin/user')}}/"+id,{"_method":"delete","_token":"{{csrf_token()}}"},function(data){
+                {{--$.post("{{url('admin/article')}}/"+id,{"_method":"delete","_token":"{{csrf_token()}}"},function(data){--}}
+                $.post("{{url('/admin/article/del')}}",{"_token":"{{csrf_token()}}","id":id},function(data){
                     //alert(data);
 //                    data是json格式的字符串，在js中如何将一个json字符串变成json对象
                     //var res =  JSON.parse(data);
@@ -142,7 +174,7 @@
         }
 
 
-
+$('#msg').fadeOut(2000);
 
 
     </script>

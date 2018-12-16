@@ -63,7 +63,7 @@
                                 <option value="0">==顶级分类==</option>
                                 @if(!empty($cateOne))
                                     @foreach($cateOne as $k=>$v)
-                                        <option value="{{$v->cate_id}}">{{$v->cate_names}}</option>
+                                        <option value="{{$v->id}}">{{$v->cate_names}}</option>
                                     @endforeach
                                 @endif
                             </select>

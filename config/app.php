@@ -166,6 +166,8 @@ return [
         Illuminate\View\ViewServiceProvider::class,
         Overtrue\LaravelFilesystem\Qiniu\QiniuStorageServiceProvider::class,
         Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
+        Ixudra\Curl\CurlServiceProvider::class,
+        Echobool\Getui\GetuiServiceProvider::class,
         /*
          * Package Service Providers...
          */
@@ -175,7 +177,8 @@ return [
          */
         App\Providers\AppServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
-        // App\Providers\BroadcastServiceProvider::class,
+//        该提供者允许你注册广播认证路由和回调
+         App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
@@ -230,6 +233,8 @@ return [
 
         'JWTAuth' => Tymon\JWTAuth\Facades\JWTAuth::class,
         'JWTFactory' => Tymon\JWTAuth\Facades\JWTFactory::class,
+        'Curl'          => Ixudra\Curl\Facades\Curl::class,
+        'Getui' => Echobool\Getui\Facades\Getui::class,
 
     ],
 

@@ -11,9 +11,10 @@ class UploadController extends Controller
     {
 //        获取客户端传过来的文件
         $file = $request->file('file_upload');
+//        dd($file);
         $file = $file[0];
 //        $file = $request->all();
-        //dd($file);
+
         if ($file->isValid()) {
             //        获取文件上传对象的后缀名
             $ext = $file->getClientOriginalExtension();

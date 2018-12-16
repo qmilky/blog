@@ -224,3 +224,4 @@ Route::group([
 });
 
 
+Route::resource('/new/words','Api\TestDelController');

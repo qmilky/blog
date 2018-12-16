@@ -7,10 +7,10 @@ return [
     'develop' => [
         'users' => [
             'getui' => [
-                'gt_appid' => 'gMwU7UNRrT6CsR1qiRnPo7',
-                'gt_appkey' => 'Be2YkxAz1O8nwINk9YCkw8',
-                'gt_appsecret' => 'FSpncwFFi87LRkYmEleYh6',
-                'gt_mastersecret' => 'gDwtIDo5c1AiPKOz4MhS6A',
+                'gt_appid' => 'EqzPeyAa2d7HQDzRhDlPl8',
+                'gt_appkey' => 'qujPOl2n6X5PkRAuXKLaY8',
+                'gt_appsecret' => 'oLbrUhd0eH6jlyhrvVG039',
+                'gt_mastersecret' => 'qFn10OB1x66a9oHdMIF8U3',
                 'gt_domainurl' => 'http://sdk.open.api.igexin.com/apiex.htm',
             ],
             //极光配置
